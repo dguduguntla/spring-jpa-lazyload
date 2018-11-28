@@ -9,10 +9,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
@@ -28,14 +28,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Departments getAllDepartments() {
-        List<Department> departmentEntities = deptRepo.findAll();
-        List<DepartmentDTO> departmentDTOS = new ArrayList<>();
-        for (Department dept : departmentEntities) {
-            DepartmentDTO departmentDTO = modelMapper.map(dept, DepartmentDTO.class);
-            departmentDTOS.add(departmentDTO);
-        }
         Departments departments = new Departments();
-        departments.setDepartments(departmentDTOS);
+        departments.setDepartments(deptRepo.findAll().stream().map(
+                dept -> modelMapper.map(dept, DepartmentDTO.class))
+                .collect(toList()));
         return departments;
     }
 

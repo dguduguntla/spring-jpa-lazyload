@@ -59,5 +59,15 @@ public class DepartmentControllerIntegrationTest {
         assertThat(dept.getLocation()).isNotNull();
     }
 
+    @Test
+    public void getSingleDeparment_WithIncludeLocation_ShouldLoadLocationNoEmployees() {
+        ResponseEntity<DepartmentDTO> departmentResponse = testRestTemplate.getForEntity("/department/{departmentId}?includeLocation=true", DepartmentDTO.class, "4");
+        assertThat(departmentResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        DepartmentDTO dept = departmentResponse.getBody();
+        assertThat(dept.getDepartmentName()).isNotBlank();
+        assertThat(dept.getEmployees()).isNull();
+        assertThat(dept.getLocation()).isNotNull();
+    }
+
 
 }

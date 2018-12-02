@@ -16,6 +16,6 @@ public interface DepartmentRepository extends JpaRepository<Department, Integer>
     @EntityGraph(attributePaths = {"employees", "location", "location.country", "location.country.region"})
     Optional<Department> findWithEmployeesAndLocationByDepartmentId(Integer deptId);
 
-    @EntityGraph(attributePaths = {"location", "location", "location.country", "location.country.region"})
+    @EntityGraph(attributePaths = {"location", "location.country", "location.country.region"})
     Optional<Department> findWithLocationByDepartmentId(Integer deptId);
 }
